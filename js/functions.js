@@ -25,7 +25,7 @@ console.log(checkForPolindrome('Потоп'));
 // 2) Убрал у проверки на NaN указание системы исчисления
 // 3) Не стал переделывать на Number.isNaN(x), так как он будет возвращать NaN и не преобразовывать строку в число.
 
-function checkPositiveInteger(string) {
+const checkPositiveInteger = (string) => {
   const typeOfString = String(string);
   let resultNumber = '';
   for (let i = 0; i <= typeOfString.length - 1; i++) {
@@ -34,7 +34,7 @@ function checkPositiveInteger(string) {
     }
   }
   return Number(resultNumber) > 0 ? Number(resultNumber) : NaN;
-}
+};
 // eslint-disable-next-line no-console
 console.log(checkPositiveInteger('ECMAScript 2022'));
 
@@ -44,20 +44,20 @@ console.log(checkPositiveInteger('ECMAScript 2022'));
 // 1) Переименовал функцию
 // 2) Убрал else
 
-function getSpecifiedLength(string, minimal, add) {
+const getSpecifiedLength = (string, minimal, add) => {
   let resultString;
   if (string.length >= minimal) {
     resultString = string;
     return resultString;
   }
   return string.padStart(minimal, add);
-}
+};
 
 // eslint-disable-next-line no-console
 console.log(getSpecifiedLength('qttt', 7, 'werty'));
 
 
-function generatingRandomNumber(min, max, decimal) {
+const generatingRandomNumber = (min, max, decimal) => {
   if (min >= 0 && max > 0 && min < max) {
     let randomNumber = Math.random() * (max - min) + min;
     randomNumber = +randomNumber.toFixed(decimal);
@@ -65,6 +65,6 @@ function generatingRandomNumber(min, max, decimal) {
   } else {
     return NaN;
   }
-}
+};
 // eslint-disable-next-line no-console
 console.log(generatingRandomNumber(2, 6, 2));
