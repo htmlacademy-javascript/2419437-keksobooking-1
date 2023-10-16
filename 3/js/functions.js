@@ -1,25 +1,35 @@
 
-// The function to check if a string is a palindrome
-function checkForPolydrome(originalText) {
+// The function to check if a string is a palindrome\
+// Внес следующие правки:
+// 1) Переписал функцию на стрелочную
+// 2) Переделал проверку на полиндром
+// 3) Теперь проверяет половину слова
+
+const checkForPolindrome = (originalText) => {
   const resultText = originalText.replaceAll(' ', '').toLowerCase();
-  for (let i = 0; i <= resultText.length; i++) {
-    if (resultText[i] === resultText[resultText.length - 1 - i]) {
-      return true;
-    } else {
+  for (let i = 0; i <= Math.ceil(resultText.length / 2); i++) {
+    if (resultText[i] !== resultText[resultText.length - 1 - i]) {
       return false;
     }
   }
-}
+  return true;
+};
+
 // eslint-disable-next-line no-console
-console.log(checkForPolydrome('Лёша на полке клопа нашёл '));
+console.log(checkForPolindrome('Потоп'));
 
 
 // The function that returns a positive integer
+// Внес следующие правки:
+// 1) Поправил длинну массива
+// 2) Убрал у проверки на NaN указание системы исчисления
+// 3) Не стал переделывать на Number.isNaN(x), так как он будет возвращать NaN и не преобразовывать строку в число.
+
 function checkPositiveInteger(string) {
   const typeOfString = String(string);
   let resultNumber = '';
-  for (let i = 0; i <= typeOfString.length; i++) {
-    if (!isNaN(typeOfString[i], 10)) {
+  for (let i = 0; i <= typeOfString.length - 1; i++) {
+    if (!isNaN(typeOfString[i])) {
       resultNumber += typeOfString[i];
     }
   }
@@ -30,17 +40,21 @@ console.log(checkPositiveInteger('ECMAScript 2022'));
 
 
 // The function returns the original string, padded with the specified characters to the specified length.
-function returnSpecifiedLength(string, minimal, add) {
+// Внес следующие правки:
+// 1) Переименовал функцию
+// 2) Убрал else
+
+function getSpecifiedLength(string, minimal, add) {
   let resultString;
   if (string.length >= minimal) {
     resultString = string;
-  } else {
-    resultString = string.padStart(minimal, add);
+    return resultString;
   }
-  return resultString;
+  return string.padStart(minimal, add);
 }
+
 // eslint-disable-next-line no-console
-console.log(returnSpecifiedLength('qttt', 7, 'werty'));
+console.log(getSpecifiedLength('qttt', 7, 'werty'));
 
 
 function generatingRandomNumber(min, max, decimal) {
@@ -53,4 +67,4 @@ function generatingRandomNumber(min, max, decimal) {
   }
 }
 // eslint-disable-next-line no-console
-console.log(generatingRandomNumber(6, 2, 6));
+console.log(generatingRandomNumber(2, 6, 2));
