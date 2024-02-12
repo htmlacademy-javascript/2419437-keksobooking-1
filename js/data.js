@@ -63,6 +63,10 @@ const createAdvertisement = () => {
 
   avatarImageIndexes = getFilterList(randomIndex);
 
+  const locationLat = getRandomInteger(3565000, 3570000) / 100000;
+
+  const locationLng = getRandomInteger(3565000, 3570000) / 100000;
+
   if(randomIndex < 10) {
     randomIndex = `0${randomIndex}`;
   }
@@ -73,11 +77,11 @@ const createAdvertisement = () => {
     },
     offer: {
       title: getRandomArrayElement(OFFER_TITLES),
-      addres:'',
+      address:`${locationLat}, ${locationLng}`,
       price: getRandomInteger(3, 10) * 1000,
       type: getRandomArrayElement(OFFER_TYPES),
       rooms: getRandomInteger(1, 5),
-      quests: getRandomInteger(1, 7),
+      guests: getRandomInteger(1, 7),
       checkin: getRandomArrayElement(OFFER_CHEKINS),
       checkout: getRandomArrayElement(OFFER_CHEKOUTS),
       features: OFFER_FEATURES.slice(0, getRandomInteger(1, OFFER_FEATURES.length)),
@@ -85,8 +89,8 @@ const createAdvertisement = () => {
       photos: OFFER_PHOTOS.slice(0, getRandomInteger(1, OFFER_PHOTOS.length)),
     },
     location: {
-      lat: getRandomInteger(3565000, 3570000) / 100000,
-      lng: getRandomInteger(13970000, 13980000) / 100000,
+      lat: locationLat,
+      lng: locationLng,
     }
   };
 };
