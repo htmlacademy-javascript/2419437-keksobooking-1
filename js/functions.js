@@ -15,9 +15,6 @@ const checkForPolindrome = (originalText) => {
   return true;
 };
 
-// eslint-disable-next-line no-console
-console.log(checkForPolindrome('Потоп'));
-
 
 // The function that returns a positive integer
 // Внес следующие правки:
@@ -35,8 +32,6 @@ const checkPositiveInteger = (string) => {
   }
   return Number(resultNumber) > 0 ? Number(resultNumber) : NaN;
 };
-// eslint-disable-next-line no-console
-console.log(checkPositiveInteger('ECMAScript 2022'));
 
 
 // The function returns the original string, padded with the specified characters to the specified length.
@@ -53,10 +48,6 @@ const getSpecifiedLength = (string, minimal, add) => {
   return string.padStart(minimal, add);
 };
 
-// eslint-disable-next-line no-console
-console.log(getSpecifiedLength('qttt', 7, 'werty'));
-
-
 const generatingRandomNumber = (min, max, decimal) => {
   if (min >= 0 && max > 0 && min < max) {
     let randomNumber = Math.random() * (max - min) + min;
@@ -66,5 +57,3 @@ const generatingRandomNumber = (min, max, decimal) => {
     return NaN;
   }
 };
-// eslint-disable-next-line no-console
-console.log(generatingRandomNumber(2, 6, 2));
