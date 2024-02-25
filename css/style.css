@@ -1048,3 +1048,12 @@ fieldset {
 .hidden {
   display: none;
 }
+
+/**
+ * Custom Pristine Styles
+ */
+
+.pristine-error {
+  display: block;
+  margin-top: 5px;
+}
