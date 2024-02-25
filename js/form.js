@@ -155,8 +155,7 @@ adForm.addEventListener('submit', (evt) => {
     adForm.submit();
     // eslint-disable-next-line no-console
     console.log('Форма валидна.');
-  }
-  else {
+  } else {
     // eslint-disable-next-line no-console
     console.log('Форма не валидна');
   }
