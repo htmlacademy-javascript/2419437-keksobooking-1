@@ -1,11 +1,15 @@
+import { similarAdvertisement } from './data.js';
+import { createCard } from './template-renderer.js';
+
 const mapFilters = document.querySelector('.map__filters');
-const mapFiltersItems = mapFilters.querySelectorAll('input, select, button, fieldset');
+const mapFiltersItems = mapFilters.querySelectorAll(
+  'input, select, button, fieldset'
+);
 const adForm = document.querySelector('.ad-form');
 const adFormFieldset = adForm.querySelectorAll('fieldset');
 
-
 const disableMapFilters = () => {
-  if(mapFilters){
+  if (mapFilters) {
     mapFilters.classList.add('map__filters--disabled');
 
     for (let i = 0; i < mapFiltersItems.length; i++) {
@@ -15,7 +19,7 @@ const disableMapFilters = () => {
 };
 
 const activeMapFilters = () => {
-  if(mapFilters){
+  if (mapFilters) {
     mapFilters.classList.remove('map__filters--disabled');
 
     for (let i = 0; i < mapFiltersItems.length; i++) {
@@ -25,7 +29,7 @@ const activeMapFilters = () => {
 };
 
 const disableUserAdForm = () => {
-  if(adForm){
+  if (adForm) {
     adForm.classList.add('ad-form--disabled');
 
     for (let i = 0; i < adFormFieldset.length; i++) {
@@ -35,7 +39,7 @@ const disableUserAdForm = () => {
 };
 
 const activeUserAdForm = () => {
-  if(adForm){
+  if (adForm) {
     adForm.classList.remove('ad-form--disabled');
 
     for (let i = 0; i < adFormFieldset.length; i++) {
@@ -50,10 +54,10 @@ const pristine = new Pristine(adForm, {
   successClass: 'form__item--valid',
   errorTextParent: 'form__item',
   errorTextTag: 'span',
-  errorTextClass: 'form__error'
+  errorTextClass: 'form__error',
 });
 
-function validateTitle (value) {
+function validateTitle(value) {
   return value.length >= 30 && value.length <= 100;
 }
 
@@ -67,10 +71,7 @@ pristine.addValidator(
   'От 30 до 100 символов'
 );
 
-pristine.addValidator(
-  adForm.querySelector('#address'),
-  validateEmpty
-);
+pristine.addValidator(adForm.querySelector('#address'), validateEmpty);
 
 function validateMaxValue(value) {
   const intValue = parseInt(value, 10);
@@ -80,42 +81,42 @@ function validateMaxValue(value) {
 const amountPrice = adForm.querySelector('#price');
 
 const minAmountPrice = {
-  'bungalow': 0,
-  'flat': 1000,
-  'hotel': 3000,
-  'house': 5000,
-  'palace': 10000,
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
 };
 
-function validateMinAmount (value) {
+function validateMinAmount(value) {
   const option = adForm.querySelector('#type option:checked');
   return value.length && parseInt(value, 10) >= minAmountPrice[option.value];
 }
 
-function getMinAmountErrorMessage () {
+function getMinAmountErrorMessage() {
   const option = adForm.querySelector('#type option:checked');
   return `Минимальная цена за ночь ${minAmountPrice[option.value]}`;
 }
 
-function onTypeChange () {
+function onTypeChange() {
   amountPrice.placeholder = minAmountPrice[this.value];
   pristine.validate(amountPrice);
 }
 
-adForm.querySelectorAll('#type').forEach((item) => item.addEventListener('change', onTypeChange));
-
+adForm
+  .querySelectorAll('#type')
+  .forEach((item) => item.addEventListener('change', onTypeChange));
 
 pristine.addValidator(amountPrice, validateMinAmount, getMinAmountErrorMessage);
-
 
 const roomsField = adForm.querySelector('[name="rooms"]');
 const capacityField = adForm.querySelector('[name="capacity"]');
 
 const roomsOption = {
-  '1': ['1'],
-  '2': ['1', '2'],
-  '3': ['1', '2', '3'],
-  '100': ['0'],
+  1: ['1'],
+  2: ['1', '2'],
+  3: ['1', '2', '3'],
+  100: ['0'],
 };
 
 const checkTimeIn = adForm.querySelector('#timein');
@@ -130,16 +131,17 @@ function onTimeChange(event) {
 checkTimeIn.addEventListener('change', onTimeChange);
 checkTimeOut.addEventListener('change', onTimeChange);
 
-function validateRooms () {
+function validateRooms() {
   return roomsOption[roomsField.value].includes(capacityField.value);
 }
 
-pristine.addValidator(capacityField, validateRooms, 'Не подходит количество комнат');
-
 pristine.addValidator(
-  amountPrice,
-  validateEmpty,
+  capacityField,
+  validateRooms,
+  'Не подходит количество комнат'
 );
+
+pristine.addValidator(amountPrice, validateEmpty);
 
 pristine.addValidator(
   amountPrice,
@@ -162,6 +164,102 @@ adForm.addEventListener('submit', (evt) => {
 });
 
 disableUserAdForm();
-activeUserAdForm();
 disableMapFilters();
-activeMapFilters();
+
+//Map
+const map = L.map('map-canvas')
+  .on('load', () => {
+    activeUserAdForm();
+    activeMapFilters();
+  })
+  .setView(
+    {
+      lat: 35.6895,
+      lng: 139.6917,
+    },
+    9
+  );
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution:
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+}).addTo(map);
+
+const mainMapIcon = L.icon({
+  iconUrl: './img/main-pin.svg',
+  iconSize: [52, 52],
+  iconAnchor: [26, 52],
+});
+
+const regularMapIcon = L.icon({
+  iconUrl: './img/pin.svg',
+  iconSize: [40, 40],
+  iconAnchor: [20, 52],
+});
+
+const mainCustomMarker = L.marker(
+  {
+    lat: 35.6895,
+    lng: 139.6917,
+  },
+  {
+    draggable: true,
+    icon: mainMapIcon,
+  }
+);
+
+similarAdvertisement.forEach((advertisement) => {
+  const {lat, lng} = advertisement.location;
+
+  const marker = L.marker(
+    {
+      lat,
+      lng,
+    },
+    {
+      draggable: false,
+      icon: regularMapIcon,
+    }
+  );
+
+  marker
+    .addTo(map)
+    .bindPopup(createCard(advertisement));
+});
+
+mainCustomMarker.addTo(map);
+
+mainCustomMarker.on('moveend', (evt) => {
+  const LatLng = evt.target.getLatLng();
+  adForm.querySelector('#address').value = `${LatLng.lat.toFixed(
+    5
+  )}, ${LatLng.lng.toFixed(5)}`;
+});
+
+
+// noUiSlider
+const sliderElement = document.querySelector('.ad-form__slider');
+const valueElement = document.querySelector('#price');
+const selectType = document.getElementById('#type');
+
+noUiSlider.create(sliderElement, {
+  range: {
+    min: 0,
+    max: 100000,
+  },
+  start: 3000,
+  step: 100,
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      return value.toFixed(0);
+    },
+    from: function (value) {
+      return parseFloat(value);
+    },
+  },
+});
+
+sliderElement.noUiSlider.on('update', (...rest) => {
+  valueElement.value = sliderElement.noUiSlider.get();
+});
