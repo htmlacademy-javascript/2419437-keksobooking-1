@@ -240,7 +240,6 @@ mainCustomMarker.on('moveend', (evt) => {
 // noUiSlider
 const sliderElement = document.querySelector('.ad-form__slider');
 const valueElement = document.querySelector('#price');
-const selectType = document.getElementById('#type');
 
 noUiSlider.create(sliderElement, {
   range: {
@@ -260,6 +259,7 @@ noUiSlider.create(sliderElement, {
   },
 });
 
-sliderElement.noUiSlider.on('update', (...rest) => {
+
+sliderElement.noUiSlider.on('update', () => {
   valueElement.value = sliderElement.noUiSlider.get();
 });
