@@ -78,7 +78,7 @@ function validateMaxValue(value) {
   return !isNaN(intValue) && intValue <= 100000;
 }
 
-const amountPrice = adForm.querySelector('#price');
+export const amountPrice = adForm.querySelector('#price');
 
 const minAmountPrice = {
   bungalow: 0,
