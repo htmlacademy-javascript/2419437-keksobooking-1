@@ -1,5 +1,3 @@
-import { similarAdvertisement } from './data.js';
-
 export const typeOfHousing = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -74,16 +72,4 @@ export function createCard(advertisement) {
   }
 
   return card;
-}
-
-// Используем функцию createCard для каждого объявления
-let cardCounter = 0;
-const mapCanvas = document.querySelector('#map-canvas');
-
-for (let i = 0; i < similarAdvertisement.length; i++) {
-  const card = createCard(similarAdvertisement[i]);
-  if (!cardCounter) {
-    mapCanvas.appendChild(card);
-    cardCounter = 1;
-  }
 }
