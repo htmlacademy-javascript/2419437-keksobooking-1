@@ -65,7 +65,7 @@ const createAdvertisement = () => {
 
   const locationLat = getRandomInteger(3565000, 3570000) / 100000;
 
-  const locationLng = getRandomInteger(3565000, 3570000) / 100000;
+  const locationLng = getRandomInteger(13865000, 13970000) / 100000;
 
   if(randomIndex < 10) {
     randomIndex = `0${randomIndex}`;
